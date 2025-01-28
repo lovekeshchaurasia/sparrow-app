@@ -1,0 +1,80 @@
+version: "3.8"
+
+services:
+  # MongoDB
+  mongo:
+    image: mongo:7.0
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: sparowapp
+      MONGO_INITDB_ROOT_PASSWORD: sparrow123
+    networks:
+      - localnet
+
+  # Kafka
+  kafka:
+    image: bitnami/kafka:3.4.1
+    hostname: kafka
+    ports:
+      - "9092:9092" # Broker listener
+      - "9093:9093" # Controller listener
+      - "9094:9094" # External listener
+    volumes:
+      - "kafka_data:/bitnami"
+    networks:
+      - localnet
+    env_file:
+      - .env
+
+  # Api
+  api:
+    image: sparrowapi/sparrow-api:v3
+    ports:
+      - "9000:9000"
+      # - "9001:9001"
+      # - "9002:9002"
+    volumes:
+      - ./:/src
+    networks:
+      - localnet
+    depends_on:
+      - mongo
+      - kafka
+    env_file:
+      - .env
+
+  # Auth
+  auth:
+    image: sparrowapi/sparrow-auth:v2
+    ports:
+      - "1421:80"
+    volumes:
+      - ./:/src
+    networks:
+      - localnet
+    depends_on:
+      - mongo
+    env_file:
+      - .env
+
+# Sparrow Web
+  sparrow-web:
+    image: sparrowapi/sparrow-web:v1
+    ports:
+      - "1422:80"
+    networks:
+      - localnet
+    depends_on:
+      - api
+      - auth
+    env_file:
+      - .env
+
+volumes:
+  kafka_data:
+    driver: local
+
+networks:
+  localnet:
+    driver: bridge
