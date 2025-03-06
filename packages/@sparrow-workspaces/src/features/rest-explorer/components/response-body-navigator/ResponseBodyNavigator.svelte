@@ -55,7 +55,9 @@
 
   const handleCopy = async () => {
     await copyToClipBoard(formatCode(response?.body));
-    notifications.success("Copied to Clipboard.");
+    notifications.success(
+      "Copied to Clipboard de dee fff rff frgwuf fuf frru Copied to Clipboard de dee fff rff frgwuf fuf frru Copied to Clipboard de dee fff rff frgwuf fuf frru.",
+    );
     MixpanelEvent(Events.COPY_API_RESPONSE);
   };
 

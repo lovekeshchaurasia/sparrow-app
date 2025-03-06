@@ -12,11 +12,14 @@
         return ErrorIcon;
     }
   };
+  function trimDescription(text: string) {
+    return text.length > 20 ? text.substring(0, 100) + "..." : text;
+  }
 </script>
 
 <ToastContainer width={"fit-content"} let:data>
   <div
-    class="d-flex position-relative custom-toast custom-toast-{data.type} toast"
+    class="d-flex position-relative custom-toast custom-toast-{data.type} toast left-border-{data.type}"
     style="height: {data.title === undefined ? '68px' : '84px'};"
   >
     <div class="w-100 content-wrapper d-flex column gap-4">
@@ -36,7 +39,7 @@
         {#if data.title !== undefined}
           <p class="data-title text-fs-14">{data.title}</p>
         {/if}
-        <span class="description">{data.description}</span>
+        <span class="description">{trimDescription(data.description)}</span>
       </div>
     </div>
     <div
@@ -60,6 +63,17 @@
     background-color: var(--bg-ds-surface-500);
     box-shadow: 0px 16px 32px 0px #0000004d;
     overflow: hidden;
+    border-radius: 8px;
+    position: relative;
+  }
+  .left-border-success {
+    border-left: 2px solid #33cc7a;
+  }
+  .left-border-error {
+    border-left: 2px solid #eb5651;
+  }
+  .left-border-warning {
+    border-left: 4px solid #ecc551;
   }
   .content-wrapper {
     display: flex;
@@ -157,6 +171,16 @@
       width: 0;
     }
   }
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
   .progress-bar {
     position: absolute;
     bottom: 0;
@@ -165,10 +189,13 @@
     width: 100%;
     border-radius: 0 0 0 8px;
     transform-origin: left;
-    animation: progress linear forwards;
+    /* animation: progress linear forwards; */
     backdrop-filter: blur(4px);
   }
-  .progress-bar-success {
+  .toast {
+    animation: slideIn 0.3s ease forwards;
+  }
+  /* .progress-bar-success {
     background-color: #33cc7a;
   }
   .progress-bar-error {
@@ -176,7 +203,7 @@
   }
   .progress-bar-warning {
     background-color: #ecc551;
-  }
+  } */
   .data-title {
     font-family: "Inter", sans-serif;
     font-weight: 500;
