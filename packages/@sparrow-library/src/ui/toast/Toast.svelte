@@ -12,15 +12,21 @@
         return ErrorIcon;
     }
   };
+  let expanded = false;
+  let ans: any = 0;
   function trimDescription(text: string) {
-    return text.length > 20 ? text.substring(0, 100) + "..." : text;
+    if (text.length > 123) {
+      return expanded ? text : text.substring(0, 154);
+    }
+    ans = text;
+    return text;
   }
 </script>
 
 <ToastContainer width={"fit-content"} let:data>
   <div
     class="d-flex position-relative custom-toast custom-toast-{data.type} toast left-border-{data.type}"
-    style="height: {data.title === undefined ? '68px' : '84px'};"
+    style="min-width:480px; max-width:700px; min-height:56px;"
   >
     <div class="w-100 content-wrapper d-flex column gap-4">
       <div class="d-flex">
@@ -40,6 +46,11 @@
           <p class="data-title text-fs-14">{data.title}</p>
         {/if}
         <span class="description">{trimDescription(data.description)}</span>
+        {#if data.description.length > 120}
+          <button on:click={() => (expanded = !expanded)} class="read-more-btn">
+            {expanded ? "Read Less" : "Read More"}
+          </button>
+        {/if}
       </div>
     </div>
     <div
@@ -144,13 +155,13 @@
     line-height: 18px;
     text-align: left;
     color: var(--text-ds-neutral-100);
-    width: 236px;
-    display: -webkit-box;
+    width: 313px;
+    /* display: -webkit-box;
     -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
+    -webkit-box-orient: vertical; */
+    /* overflow: hidden; */
+    /* text-overflow: ellipsis; */
+    /* white-space: normal; */
   }
   .toast-container {
     z-index: 1000000 !important;
@@ -214,5 +225,18 @@
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 0;
+  }
+
+  .read-more-btn {
+    height: 23px;
+    width: 84px;
+    font-size: 12px;
+    position: absolute;
+    left: 360px;
+    bottom: 40px;
+    background-color: transparent;
+    color: var(--bg-ds-neutral-100);
+    border: 1px solid grey;
+    border-radius: 5px;
   }
 </style>
