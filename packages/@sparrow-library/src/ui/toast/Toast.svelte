@@ -13,14 +13,14 @@
     }
   };
   let expanded = false;
-  let ans: any = 0;
-  function trimDescription(text: string) {
+  function trimDescription(text: string, _isReadMore: boolean) {
+    if (isReadMore) return text;
     if (text.length > 123) {
       return expanded ? text : text.substring(0, 154);
     }
-    ans = text;
     return text;
   }
+  let isReadMore = false;
 </script>
 
 <ToastContainer width={"fit-content"} let:data>
@@ -45,9 +45,17 @@
         {#if data.title !== undefined}
           <p class="data-title text-fs-14">{data.title}</p>
         {/if}
-        <span class="description">{trimDescription(data.description)}</span>
+        <span class="description"
+          >{trimDescription(data.description, isReadMore)}</span
+        >
         {#if data.description.length > 120}
-          <button on:click={() => (expanded = !expanded)} class="read-more-btn">
+          <button
+            on:click={() => {
+              isReadMore = !isReadMore;
+              expanded = !expanded;
+            }}
+            class="read-more-btn moved-bottom"
+          >
             {expanded ? "Read Less" : "Read More"}
           </button>
         {/if}
@@ -231,12 +239,12 @@
     height: 23px;
     width: 84px;
     font-size: 12px;
-    position: absolute;
-    left: 360px;
-    bottom: 40px;
     background-color: transparent;
     color: var(--bg-ds-neutral-100);
     border: 1px solid grey;
     border-radius: 5px;
+    position: absolute;
+    left: 360px;
+    transition: bottom 0.8s ease-in-out;
   }
 </style>

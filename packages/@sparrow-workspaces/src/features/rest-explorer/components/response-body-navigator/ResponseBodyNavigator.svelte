@@ -56,7 +56,7 @@
   const handleCopy = async () => {
     await copyToClipBoard(formatCode(response?.body));
     notifications.success(
-      "Your API request was processed successfully, and all changes were applied. The updated settings are now active. You can test the API to verify the changes. ",
+      "Your API request was processed successfully, and all changes were applied. The updated settings are now active. You can test the API to verify the changes. were applied. The updated settings are now active. You can test the API to verify the changes.",
     );
     MixpanelEvent(Events.COPY_API_RESPONSE);
   };
