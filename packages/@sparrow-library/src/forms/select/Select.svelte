@@ -115,7 +115,7 @@
   /**
    * Determines versions of the Select menu.
    */
-  export let menuItem: "v1" | "v2" | "v3"  = "v1";
+  export let menuItem: "v1" | "v2" | "v3" = "v1";
   /**
    * Determines icons used in Select header.
    */
@@ -491,11 +491,11 @@
           </span>
         {/if}
       </p>
+
       <span
         class="d-flex ps-2 {!isArrowIconRequired ? 'd-none' : ''}"
         class:select-logo-active={isOpen}
       >
-        <CaretDownFilled size={"16px"}/>
       </span>
     </div>
   </div>
@@ -579,7 +579,6 @@
             />
           {:else if menuItem === "v3"}
             <MenuItemsV3 {list} {selectedRequest} {getTextColor} />
-          
           {/if}
         </div>
       {/each}
@@ -613,7 +612,7 @@
     width: auto;
     padding: 0 10px;
   }
-  
+
   // default states
   .select-background-transparent {
     background-color: transparent;
@@ -727,7 +726,7 @@
     font-size: 12px;
     font-weight: 400;
   }
-  .select-data{
+  .select-data {
     background-color: var(--bg-ds-surface-600);
   }
   .select-active {
@@ -794,7 +793,7 @@
     color: lightgray; /* Change background color for visual differentiation */
     /* Add any other styles to indicate the disabled state */
   }
-  .select-btn:hover{
+  .select-btn:hover {
     background-color: var(--bg-ds-surface-400) !important;
   }
 </style>

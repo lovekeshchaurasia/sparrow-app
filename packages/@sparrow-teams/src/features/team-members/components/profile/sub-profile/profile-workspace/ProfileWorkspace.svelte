@@ -2,6 +2,7 @@
   import { TeamRole, WorkspaceRole } from "@sparrow/common/enums/team.enum";
   import type { workspaceDocumentWithPosition } from "@sparrow/common/interfaces";
   import { Select } from "@sparrow/library/forms";
+  import { CaretDownFilled } from "@sparrow/library/icons";
   export let workspace: workspaceDocumentWithPosition;
   export let user;
   export let userType;
@@ -55,15 +56,18 @@
   };
 </script>
 
-<section>
+<section style="padding-top:4px; padding-bottom:2px">
   <div
     class="d-flex justify-content-between align-items-center mb-1"
-    style="height: 34px; "
+    style="height: 34px;"
   >
     <span
       style="font-size:12px; font-weight:400; width:calc(100% - 120px);"
-      class="text-whiteColor ellipsis">{workspace.name}</span
+      class="text-whiteColor ellipsis"
+      ><span style="color:var(--text-ds-neutral-400);">{workspace.name}</span
+      ></span
     >
+
     <div class="dropdown-workspace-access">
       {#if (userType === TeamRole.TEAM_OWNER && user.role === TeamRole.TEAM_MEMBER) || (userType === TeamRole.TEAM_ADMIN && user.role === TeamRole.TEAM_MEMBER)}
         <Select
@@ -131,6 +135,9 @@
           headerFontSize={"10px"}
         />
       {/if}
+    </div>
+    <div style="position:relative;right:2.8rem;padding-right:2px">
+      <CaretDownFilled size={"16px"} color="var(--bg-ds-neutral-600)" />
     </div>
   </div>
 </section>

@@ -76,7 +76,9 @@
                   {list?.team?.teamName || ""}
                 </p>
               </div>
-
+              <div style="display:flex; ">
+                <PeopleRegular size={"16px"} />
+              </div>
               <span class={`${list.users.length <= 1 && "d-none"} my-2 me-1`}>
                 <PeopleRegular size={"16px"} />
               </span>
