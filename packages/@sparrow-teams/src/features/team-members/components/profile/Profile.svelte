@@ -215,4 +215,11 @@
     height: 170px;
     overflow-y: auto;
   }
+
+  ::-webkit-scrollbar-track {
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--bg-ds-surface-50);
+  }
 </style>
