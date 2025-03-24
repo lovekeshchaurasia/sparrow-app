@@ -10,6 +10,12 @@
   import { Table } from "@sparrow/teams/components";
   import { Rows } from "@sparrow/teams/components";
   import { TeamSkeleton } from "../../images";
+  import {
+    ChevronLeftRegular,
+    ChevronDoubleLeftRegular,
+    ChevronDoubleRightRegular,
+    ChevronRightRegular,
+  } from "@sparrow/library/icons";
 
   export let data: any;
   export let openTeam: TeamDocument;
@@ -170,7 +176,7 @@
             <button
               on:click={() => (currPage = 1)}
               class="bg-transparent border-0"
-              ><DoubleLeftIcon
+              ><ChevronDoubleLeftRegular
                 color={currPage === 1 ? "var(--border-secondary-200)" : "white"}
               /></button
             >
@@ -179,7 +185,7 @@
                 if (currPage > 1) currPage -= 1;
               }}
               class="bg-transparent border-0"
-              ><LeftIcon
+              ><ChevronLeftRegular
                 color={currPage === 1 ? "var(--border-secondary-200)" : "white"}
               /></button
             >
@@ -198,7 +204,7 @@
                   currPage += 1;
               }}
               class="bg-transparent border-0"
-              ><RightIcon
+              ><ChevronDoubleRightRegular
                 color={currPage ===
                 Math.ceil(
                   data?.filter((item) =>
@@ -221,7 +227,7 @@
                   ).length / workspacePerPage,
                 ))}
               class="bg-transparent border-0"
-              ><DoubleRightIcon
+              ><ChevronDoubleRightRegular
                 color={currPage ===
                 Math.ceil(
                   data?.filter((item) =>
