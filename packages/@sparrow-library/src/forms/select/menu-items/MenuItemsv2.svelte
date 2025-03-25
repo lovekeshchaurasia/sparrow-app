@@ -18,6 +18,8 @@
     description?: string;
     default?: boolean;
     hide?: boolean;
+    icon?: string;
+    iconProps?: Record<string, any>;
   };
   /**
    * selected option
@@ -26,17 +28,17 @@
     id: string;
   };
 
-  export let showDescription= true;
+  export let showDescription = true;
   /**
    * Ticked mark icon
    */
   export let tickIcon: any;
-  export let getTextColor: (color: any) => {};
+  export let getTextColor: (color: any) => string;
   /**
    * marks the tickmark is highlighted
    */
   export let highlightTickedItem: boolean;
-
+ 
   /**
    * body theme - background
    */
@@ -44,6 +46,8 @@
 
   let isMenuItemHover = false;
   let isMenuItemClicked = false;
+
+  export let fontSize;
 
   /**
    * @description - adds CSS class to menu item when hovered or clicked according to the theme
@@ -68,15 +72,12 @@
       return `select-hover-highlight-violet-btn`;
     } else if (_bodyTheme === "dark" && _isMenuItemHover) {
       return `select-hover-highlight-dark-btn`;
-    } 
-    else if (_bodyTheme === "surface" && _isMenuItemHover) {
+    } else if (_bodyTheme === "surface" && _isMenuItemHover) {
       return `select-hover-highlight-surface-btn`;
-    } 
-    else {
+    } else {
       return "";
     }
   };
-
   /**
    * @description - add classes to ticked options
    * @param _id - item id (rows iteration)
@@ -87,8 +88,10 @@
       return `select-ticked-highlight-text`;
     } else return "";
   };
+ 
+  $: colorClass = list?.color ? getTextColor(list.color) : '';
 </script>
-
+ 
 <div
   on:mouseenter={() => {
     isMenuItemHover = true;
@@ -109,9 +112,20 @@
   )}"
   tabindex="0"
 >
+  {#if list.icon}
+    <div class="me-2">
+      <svelte:component
+        this={list.icon}
+        {...list.iconProps}
+        class="menu-icon"
+      />
+    </div>
+  {/if}
+ 
   <div class="content-wrapper">
     <p
-      class="m-0 p-0 option-name ellipsis {getTextColor(
+      style="font-size: {fontSize}"
+      class="m-0 p-0 ellipsis option-name {getTextColor(
         list?.color,
       )} {extractBodyTextHighlight(list.id, selectedRequest?.id)}"
     >
@@ -119,46 +133,46 @@
     </p>
     {#if list.description && showDescription}
       <div class="description-wrapper">
-        <small class="text-textColor description">{list.description}</small>
+        <small class="text-textColor description" style="font-size: {fontSize}"
+          >{list.description}</small
+        >
       </div>
     {/if}
   </div>
   {#if selectedRequest?.id === list.id}
-     <span class="d-flex align-items-center justify-content-center tick-icon">
+    <span class="d-flex align-items-center justify-content-center tick-icon">
       <CheckMarkIcon color="var(--text-primary-300)" size="medium" />
     </span>
   {/if}
 </div>
-
+ 
 <style>
   .select-option-container {
     width: 100%;
-   
   }
   .select-option-container:focus-visible {
-     outline: 2px solid var(--bg-ds-primary-300);
-     outline-offset: -2px;
-     border-radius:4px;
+    outline: 2px solid var(--bg-ds-primary-300);
+    outline-offset: -2px;
+    border-radius: 4px;
   }
 
-  .select-option-container:active{
+  .select-option-container:active {
     background-color: var(--bg-ds-surface-500);
   }
-
+ 
   .content-wrapper {
     flex: 1;
     min-width: 0;
   }
-
+ 
   .option-name {
-    font-size: 12px;
     margin-bottom: 4px;
   }
-
+ 
   .description-wrapper {
     width: 100%;
   }
-
+ 
   .description {
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -166,18 +180,17 @@
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
-    font-size: 11px;
     line-height: 1.3;
     word-break: break-word;
   }
-
+ 
   .tick-icon {
     height: 16px;
     width: 16px;
     flex-shrink: 0;
     margin-left: 8px;
   }
-
+ 
   /* hover states */
   .select-hover-highlight-dark-btn {
     background-color: var(--dull-background-color);
@@ -185,10 +198,10 @@
   .select-hover-highlight-violet-btn {
     background-color: var(--bg-tertiary-600);
   }
-  .select-hover-highlight-surface-btn{
+  .select-hover-highlight-surface-btn {
     background-color: var(--bg-ds-surface-400);
   }
-
+ 
   /* clicked states */
   .select-clicked-highlight-dark-btn {
     background-color: var(--bg-secondary-400);
@@ -196,13 +209,45 @@
   .select-clicked-highlight-violet-btn {
     background-color: var(--bg-tertiary-700);
   }
-
+ 
   .select-ticked-highlight-text {
     color: var(--text-primary-300) !important;
   }
-
+ 
   /* others */
   .highlight {
     cursor: pointer;
   }
+ 
+.color-primary {
+  color: var(--text-ds-primary-300);
+}
+ 
+.color-danger {
+  color: var(--text-ds-danger-300);
+}
+ 
+.color-default {
+  color: var(--text-ds-surface-500);
+}
+ 
+.color-white {
+  color: var(--text-ds-neutral-50);
+}
+ 
+.color-get {
+  color: var(--text-ds-success-300);
+}
+ 
+.color-post {
+  color: var(--text-ds-warning-300);
+}
+ 
+.color-put {
+  color: var(--text-ds-secondary-300);
+}
+ 
+.color-patch {
+  color: var(--bg-ds-accent-300);
+}
 </style>

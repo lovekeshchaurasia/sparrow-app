@@ -34,6 +34,8 @@
   } from "../components";
   import { SocketSectionEnum } from "@sparrow/common/types/workspace/web-socket";
   import ResponseData from "../components/response-data/ResponseData.svelte";
+  import { writable } from "svelte/store";
+  import { loadingState } from "../../../../../@sparrow-common/src/store";
 
   export let tab: Observable<Tab>;
   export let collections: Observable<CollectionDocument[]>;
@@ -69,16 +71,26 @@
   export let onClearInput;
   export let onUpdateFilterType;
   let isExposeSaveAsSocket = false;
+  const loading = writable<boolean>(false);
   const toggleSaveRequest = (flag: boolean): void => {
     isExposeSaveAsSocket = flag;
   };
+  loadingState.subscribe((tab) => {
+    const tabIdValue = tab.get($tab.tabId);
+    if (tabIdValue === undefined) {
+      loading.set(false);
+    } else {
+      loading.set(tabIdValue);
+    }
+  });
 </script>
 
 {#if $tab.tabId}
   <div class="d-flex rest-explorer-layout h-100">
-    <div class="w-100 d-flex flex-column h-100 px-3 pt-3 pb-2">
+    <div class="w-100 d-flex flex-column h-100 pt-3 pb-2" style="padding:0px 12px;">
       <!-- HTTP URL Section -->
       <HttpUrlSection
+        isSaveLoad={$loading}
         class=""
         isSave={$tab.isSaved}
         bind:userRole
@@ -195,14 +207,19 @@
                         />
                       </div>
                       <div style="overflow:auto; height:50%;">
-                        <div class="h-100 d-flex flex-column">
+                        <div
+                          class="h-100 d-flex flex-column"
+                          style="border-top: 1px solid var(--border-ds-surface-100);padding-top: 8px;"
+                        >
                           <ResponsePreviewNavigator
                             {webSocket}
                             {isWebApp}
                             {onUpdateContentType}
                           />
                           <div class="pt-2"></div>
-                          <div style="flex:1; overflow:auto;">
+                          <div
+                            style="flex:1; overflow:auto;border: 1px solid var(--border-ds-surface-100);border-radius:2px;"
+                          >
                             <ResponsePreview {webSocket} />
                           </div>
                         </div>
@@ -258,7 +275,7 @@
   :global(.web-socket-splitter.splitpanes--vertical > .splitpanes__splitter) {
     width: 11px !important;
     height: 100% !important;
-    background-color: var(--bg-secondary-500) !important;
+    background-color: var(--bg-ds-surface-100) !important;
     border-left: 5px solid var(--border-ds-surface-900) !important;
     border-right: 5px solid var(--border-ds-surface-900) !important;
     border-top: 0 !important;
