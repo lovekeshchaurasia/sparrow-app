@@ -333,6 +333,7 @@
           type={"text"}
           size={"medium"}
           maxlength={500}
+          width={"398px"}
           id={"renameInputFieldCollection"}
           value={$tab?.name || ""}
           variant={"inline"}
